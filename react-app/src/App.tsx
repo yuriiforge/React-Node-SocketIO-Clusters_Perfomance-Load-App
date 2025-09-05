@@ -1,50 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
 import socket from './socketConnection';
 import { useEffect, useState } from 'react';
+import Widget from './components/Widget';
+import { PerformanceDataMap } from './types/PerformanceData';
 
 function App() {
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [serverMessage, setServerMessage] = useState<string | null>(null);
+  const [performanceData, setPerformanceData] = useState<PerformanceDataMap>(
+    {}
+  );
 
   useEffect(() => {
-    // Connection state
-    socket.on('connect', () => {
-      setIsConnected(true);
-    });
-
-    socket.on('disconnect', () => {
-      setIsConnected(false);
-    });
-
-    // Example custom event from server
-    socket.on('welcome', (msg: string) => {
-      setServerMessage(msg);
+    socket.on('perfData', (data) => {
+      const copyPerfData = { ...performanceData };
+      copyPerfData[data.macA] = data;
+      setPerformanceData(copyPerfData);
     });
 
     // Cleanup listeners
     return () => {
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('welcome');
+      socket.off('perfData');
     };
-  }, []);
+  }, [performanceData]);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Socket status:{' '}
-          <strong style={{ color: isConnected ? 'lightgreen' : 'red' }}>
-            {isConnected ? 'Connected' : 'Disconnected'}
-          </strong>
-        </p>
+  const widgets = Object.values(performanceData).map((d) => (
+    <Widget key={d.macA} data={d} />
+  ));
 
-        {serverMessage && <p>Message from server: {serverMessage}</p>}
-      </header>
-    </div>
-  );
+  return <>{widgets}</>;
 }
 
 export default App;

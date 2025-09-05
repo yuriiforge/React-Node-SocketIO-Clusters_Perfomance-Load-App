@@ -1,6 +1,13 @@
 const os = require('os');
 const io = require('socket.io-client');
-const socket = io('http://127.0.0.1:3000');
+
+const options = {
+  auth: {
+    token: '239rfaiskdfvq243EGa4q3wefsdad',
+  },
+};
+
+const socket = io('http://127.0.0.1:3000', options);
 
 socket.on('connect', () => {
   console.log('We connected to the server');
@@ -15,7 +22,16 @@ socket.on('connect', () => {
       break;
     }
   }
-  console.log(macA);
+
+  const perfDataInterval = setInterval(async () => {
+    const perfData = await performanceLoadData();
+    perfData.macA = macA;
+    socket.emit('perfData', perfData);
+  }, 1000);
+
+  socket.on('disconnect', () => {
+    clearInterval(perfDataInterval);
+  });
 });
 
 const getCpuLoad = () =>
@@ -84,6 +100,5 @@ function cpuAverage() {
 
 const run = async () => {
   const data = await performanceLoadData();
-  console.log(data);
 };
 run();
