@@ -43,12 +43,12 @@ const Widget = ({ data }: Props) => {
   };
 
   return (
-    <>
+    <div className="widget row justify-content-evenly">
       <h1>Widget</h1>
       <Cpu data={cpuData} />
       <Memory data={memoryData} />
       <Info data={infoData} />
-    </>
+    </div>
   );
 };
 

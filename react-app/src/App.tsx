@@ -1,5 +1,5 @@
 import './App.css';
-import socket from './socketConnection';
+import socket from './utilities/socketConnection';
 import { useEffect, useState } from 'react';
 import Widget from './components/Widget';
 import { PerformanceDataMap } from './types/PerformanceData';
@@ -26,7 +26,7 @@ function App() {
     <Widget key={d.macA} data={d} />
   ));
 
-  return <>{widgets}</>;
+  return <div className="container">{widgets}</div>;
 }
 
 export default App;
