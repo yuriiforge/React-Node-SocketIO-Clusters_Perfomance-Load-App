@@ -15,3 +15,34 @@ This application monitors the performance of connected devices in real time. It 
 - **Frontend:** React + TypeScript, Canvas API for visual widgets
 - **Backend:** Node.js + Socket.IO for real-time communication
 - **Utilities:** OS module for system metrics, Moment.js for uptime formatting
+
+## Setup
+
+1. Clone the repo
+
+2. In each folder, run
+
+```bash
+npm install
+```
+
+3. Run the main server
+
+```bash
+cd ./server
+node servers.js
+```
+
+4. Run the nodeClient to collect the data
+
+```bash
+cd ./nodeClient
+node index.js
+```
+
+5. Go to the client folder and run the front-end app
+
+```bash
+cd ./react-app
+npm run start
+```
