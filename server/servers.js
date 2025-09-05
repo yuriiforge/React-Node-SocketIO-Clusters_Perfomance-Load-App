@@ -7,6 +7,8 @@ const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter'); /
 
 const socketMain = require('./socketMain');
 
+const PORT = process.env.PORT || 3000;
+
 if (cluster.isPrimary) {
   console.log(`Master ${process.pid} is running`);
 
@@ -30,8 +32,6 @@ if (cluster.isPrimary) {
     serialization: 'advanced',
   });
 
-  httpServer.listen(3000); // Internet facing!
-
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
@@ -46,7 +46,7 @@ if (cluster.isPrimary) {
   const httpServer = http.createServer();
   const io = new Server(httpServer, {
     cors: {
-      origin: 'http://localhost:3001',
+      origin: 'https://react-node-socket-io-clusters-perfo.vercel.app',
       credentials: true,
     },
   });
@@ -60,4 +60,6 @@ if (cluster.isPrimary) {
   //socketMain is OUR file where our emits and listens happen.
   //it needs the io object
   socketMain(io, process.pid);
+
+  httpServer.listen(PORT); // Internet facing!
 }
