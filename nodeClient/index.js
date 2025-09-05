@@ -1,4 +1,22 @@
 const os = require('os');
+const io = require('socket.io-client');
+const socket = io('http://127.0.0.1:3000');
+
+socket.on('connect', () => {
+  console.log('We connected to the server');
+
+  const nI = os.networkInterfaces();
+  let macA;
+
+  for (let key in nI) {
+    const isInternetFacing = !nI[key][0].internal;
+    if (isInternetFacing) {
+      macA = nI[key][0].mac;
+      break;
+    }
+  }
+  console.log(macA);
+});
 
 const getCpuLoad = () =>
   new Promise((resolve, reject) => {
