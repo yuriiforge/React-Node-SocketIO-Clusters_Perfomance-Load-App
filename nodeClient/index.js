@@ -7,7 +7,10 @@ const options = {
   },
 };
 
-const socket = io('http://127.0.0.1:3000', options);
+const socket = io(
+  'https://react-node-socketio-clusters-perfomance.onrender.com',
+  options
+);
 
 socket.on('connect', () => {
   console.log('We connected to the server');

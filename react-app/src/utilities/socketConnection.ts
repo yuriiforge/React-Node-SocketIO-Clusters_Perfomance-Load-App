@@ -4,7 +4,10 @@ const options = {
   auth: { token: '23jrtiheriufyqwidsf' },
 };
 
-const socket = io('http://localhost:3000', options);
+const socket = io(
+  'https://react-node-socketio-clusters-perfomance.onrender.com',
+  options
+);
 
 // socket.on('connect', () => {
 //   console.log('Connected with id: ', socket.id);
